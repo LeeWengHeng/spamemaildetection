@@ -7,10 +7,17 @@ Original file is located at
     https://colab.research.google.com/drive/16jtbj1KMjbtobfV5j9mt3SQq5oJhPj00
 """
 
-#import streamlit as st
+import streamlit as st
 import joblib
 import re
 import string
+
+# --- Streamlit UI and Logic ---
+# THIS MUST BE THE FIRST STREAMLIT COMMAND
+st.set_page_config(
+    page_title="Spam Email Detector",
+    page_icon="📧"
+)
 
 # --- Load the saved model and vectorizer ---
 # These files should be in the same GitHub repository
@@ -29,19 +36,13 @@ def clean_text(text):
     """
     alphanumeric = lambda x: re.sub(r"""\w*\d\w*""", '', x)
     punc_lower = lambda x: re.sub('[%s]' % re.escape(string.punctuation), ' ', x.lower())
-
+    
     cleaned_text = alphanumeric(text)
     cleaned_text = punc_lower(cleaned_text)
     return cleaned_text
 
-# --- Streamlit UI and Logic ---
-st.set_page_config(
-    page_title="Spam Email Detector",
-    page_icon="📧"
-)
-
 st.title("Spam Email Detector")
-st.markdown("Enter an email message below and I'll tell you if it's spam or not.")
+st.markdown("Enter an email message below")
 
 # Text area for user input
 user_input = st.text_area(
