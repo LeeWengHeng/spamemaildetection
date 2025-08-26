@@ -77,4 +77,4 @@ if st.button("Predict"):
 
 # Add some helpful information at the bottom
 st.markdown("---")
-st.markdown("This uses a Logistic Regression model trained on a dataset of spam and ham emails.")
+st.markdown("This uses a Random Forest model trained on a dataset of spam and ham emails.")
