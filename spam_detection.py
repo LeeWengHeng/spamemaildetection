@@ -12,15 +12,13 @@ import joblib
 import re
 import string
 
-# --- Streamlit UI and Logic ---
-# THIS MUST BE THE FIRST STREAMLIT COMMAND
+# StreamLit UI
 st.set_page_config(
     page_title="Spam Email Detector",
     page_icon="📧"
 )
 
-# --- Load the saved model and vectorizer ---
-# These files should be in the same GitHub repository
+# Load and Save Model
 try:
     model = joblib.load('model.joblib')
     vectorizer = joblib.load('vectorizer.joblib')
@@ -28,12 +26,8 @@ except FileNotFoundError:
     st.error("Model files not found. Please ensure 'model.joblib' and 'vectorizer.joblib' are in the same directory.")
     st.stop()
 
-# --- Helper function for text cleaning ---
+# Text Clean & Help Function
 def clean_text(text):
-    """
-    Cleans a given string by removing alphanumeric characters
-    and punctuation, and converting to lowercase.
-    """
     alphanumeric = lambda x: re.sub(r"""\w*\d\w*""", '', x)
     punc_lower = lambda x: re.sub('[%s]' % re.escape(string.punctuation), ' ', x.lower())
     
@@ -44,7 +38,7 @@ def clean_text(text):
 st.title("Spam Email Detector")
 st.markdown("Enter an email message below")
 
-# Text area for user input
+# User Input
 user_input = st.text_area(
     "Enter the email message:",
     placeholder="Example: You've won a new iPhone! Click here to claim your prize.",
@@ -52,19 +46,19 @@ user_input = st.text_area(
 )
 
 
-# Predict button
+# Predict Button
 if st.button("Predict"):
     if user_input:
-        # 1. Clean the input text
+        # 1. Clean input text
         cleaned_input = clean_text(user_input)
 
-        # 2. Vectorize the cleaned text
+        # 2. Vectorize cleaned text
         vectorized_input = vectorizer.transform([cleaned_input])
 
-        # 3. Make a prediction
+        # 3. Make prediction
         prediction = model.predict(vectorized_input)
 
-        # 4. Display the result
+        # 4. Display result
         st.subheader("Prediction:")
         if prediction[0] == 'spam':
             st.error("This is a SPAM email.")
@@ -75,6 +69,6 @@ if st.button("Predict"):
     else:
         st.warning("Please enter some text to get a prediction.")
 
-# Add some helpful information at the bottom
+# Additional Information
 st.markdown("---")
 st.markdown("This uses a Random Forest model trained on a dataset of spam and ham emails.")
