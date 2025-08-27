@@ -64,7 +64,7 @@ if st.button("Predict"):
             st.error("This is a SPAM email.")
 
         else:
-            st.success("This is a NORMAL email.")
+            st.success("This is a NOT A SPAM email.")
 
     else:
         st.warning("Please enter some text to get a prediction.")
